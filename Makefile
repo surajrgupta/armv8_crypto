@@ -33,7 +33,7 @@
 SRCDIR := ${CURDIR}
 OBJDIR := ${CURDIR}/obj
 # build flags
-CC = gcc
+CC = aarch64-linux-gnu-gcc
 CFLAGS += -O3
 CFLAGS += -Wall -static
 CFLAGS += -I$(SRCDIR)/asm/include
@@ -57,12 +57,12 @@ all: libarmv8_crypto.a
 
 .PHONY:	clean
 clean:
-	@rm -rf $(SRCDIR)/assym.s *.a $(OBJDIR)
+	@rm -rf $(SRCDIR)/asm/assym.s *.a $(OBJDIR)
 
 assym.s: genassym.c
 	@$(CC) $(CFLAGS) -O0 -S $< -o - | \
 		awk '($$1 == "<genassym>") { print "#define " $$2 "\t" $$3 }' > \
-		$(SRCDIR)/$@
+		$(SRCDIR)/asm/$@
 $(OBJDIR):
 	mkdir $(OBJDIR)
 
